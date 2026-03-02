@@ -4,6 +4,7 @@
 % the relevant modelParameters, and then calls the function
 % "positionEstimator" to decode the trajectory. 
 % RMSE = testFunction_for_students_MTb("02_Overfitter_Buffer")
+% RMSE = testFunction_for_students_MTb("Test_LDA+K")
 
 function RMSE = testFunction_for_students_MTb(teamName)
 
