@@ -3,6 +3,7 @@
 % This function first calls the function "positionEstimatorTraining" to get
 % the relevant modelParameters, and then calls the function
 % "positionEstimator" to decode the trajectory. 
+% RMSE = testFunction_for_students_MTb("02_Overfitter_Buffer")
 
 function RMSE = testFunction_for_students_MTb(teamName)
 
