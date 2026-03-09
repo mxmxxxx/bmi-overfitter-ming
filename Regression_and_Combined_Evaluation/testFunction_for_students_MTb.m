@@ -3,18 +3,39 @@
 % This function first calls the function "positionEstimatorTraining" to get
 % the relevant modelParameters, and then calls the function
 % "positionEstimator" to decode the trajectory. 
+
 % RMSE = testFunction_for_students_MTb("overfitter")
+% RMSE = testFunction_for_students_MTb("overfitter_ming")
+% RMSE = testFunction_for_students_MTb("overfitter_ming_population")
 % RMSE = testFunction_for_students_MTb("Test_LDA+K")
 
 function RMSE = testFunction_for_students_MTb(teamName)
 
-load monkeydata0.mat
+% Use script directory so addpath/load work regardless of current folder
+scriptDir = fileparts(mfilename('fullpath'));
+
+% Load data: try script dir, then overfitter subfolder, else current dir
+dataPath = fullfile(scriptDir, 'monkeydata0.mat');
+if ~exist(dataPath, 'file')
+    dataPath = fullfile(scriptDir, 'overfitter', 'monkeydata0.mat');
+end
+if exist(dataPath, 'file')
+    load(dataPath);
+else
+    load('monkeydata0.mat');
+end
 
 % Set random number generator
 rng(2013);
 ix = randperm(length(trial));
 
-addpath(teamName);
+% Add team folder relative to script (so "overfitter", "overfitter_ming" etc. are found)
+teamPath = fullfile(scriptDir, teamName);
+if ~exist(teamPath, 'dir')
+    warning('Team folder not found: %s . Using current path for decoder.', teamPath);
+else
+    addpath(teamPath);
+end
 
 % Select training and testing data (you can choose to split your data in a different way if you wish)
 trainingData = trial(ix(1:50),:);
@@ -70,8 +91,10 @@ end
 
 legend('Decoded Position', 'Actual Position')
 
-RMSE = sqrt(meanSqError/n_predictions) 
+RMSE = sqrt(meanSqError/n_predictions);
 
-rmpath(genpath(teamName))
+if exist(teamPath, 'dir')
+    rmpath(teamPath);
+end
 
 end
